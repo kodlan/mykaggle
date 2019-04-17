@@ -30,6 +30,7 @@ data = pd.read_csv(".\\titanic\\data\\train.csv")
 
 # Fill all NaNs with 0
 data['Cabin'] = data['Cabin'].fillna('-')
+data['Age'] = data['Age'].fillna(data['Age'].mean())
 data = data.fillna(0)
 
 
@@ -63,7 +64,7 @@ model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer=K.optimizers.SGD(lr=0.01), metrics=['accuracy'])
 
 my_logger = MyLogger(n=100)
-h = model.fit(X, Y, batch_size=10, epochs=500, verbose=0, callbacks=[my_logger])
+h = model.fit(X, Y, batch_size=10, epochs=1000, verbose=0, callbacks=[my_logger])
 
 test = pd.read_csv(".\\titanic\\data\\test.csv")
 
@@ -94,4 +95,4 @@ T = sc.fit_transform(T)
 pred = model.predict(T)
 test['Survived'] = np.round(pred).astype(int)
 
-test.to_csv('output.csv', columns=['PassengerId', 'Survived'], index=False)
+test.to_csv('.\\titanic\\output.csv', columns=['PassengerId', 'Survived'], index=False)
